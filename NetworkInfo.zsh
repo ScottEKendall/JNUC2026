@@ -7,10 +7,11 @@
 # it will display a message indicating that and show a generic network icon. The script also supports optional color indicators (green for good, red for alert) based on whether an active adapter is found.
 # set -x
 
-# Location of the Support App preference plist where we will write the password age and days left until expiration
+# Location of the Support App preference plist where we will write the network status. Make sure this matches the path used by your Support App to read the extension data. 
+
 supportAppDir="/Library/Preferences/nl.root3.support.plist"
 
-# support.app Extension ID...this MUST match the extension ID you set in the button
+# The extensionID variable will be used as a suffix for the keys we write to this plist, so they should be unique for each extension you create.
 extensionID="NetworkInfo"
 
 # Set to true to enable color indicators (red/green circles) for good/bad network status
