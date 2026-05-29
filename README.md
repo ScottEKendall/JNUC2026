@@ -24,6 +24,10 @@ This is the same extension that the support.app website uses for their example, 
 
 This extensions will show your connection type and an icon to reflect the connection as well.  It uses the priority of (VPN > Ethernet > Wifi).  It will also show an alert if it cannot find any active connection on your system.
 
+This extension showcases what all you can do with extension notifications.  In this example, the networks could have 1 of 5 possible configurations (with their respective icons) and will show an alert under specific conditions.
+
+![](NetworkInfo_icons.png)
+
 ## ShowPasswordAge ##
 
 [ShowPasswordAge](https://github.com/ScottEKendall/JNUC2026/blob/main/ShowPasswordAge.zsh)
