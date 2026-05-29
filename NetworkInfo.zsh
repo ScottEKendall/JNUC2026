@@ -18,15 +18,17 @@ colorIndicator="true"
 
 # Setup UI indicators
 if [[ "$colorIndicator" == "true" ]]; then
-    green="🟢"
-    red="🔴"
+    greenCircle="🟢"
+    yellowCircle="🟡 "
+    redCircle="🔴"
 else
-    green=""
-    red=""
+    greenCircle=""
+    yellowCircle=""
+    redCircle=""
 fi
 
 # Default status and alert level
-typeset -g is_alert=false
+typeset -g ShowAlert=false
 
 # Initialize global variables for symbol and return value. These will be updated by the getNetworkStatus function based on the current network status. 
 # The symbol variable will be used to set the appropriate SF Symbol icon in the Support App, and the retval variable will contain the text output (IP address and connection type or an error message).
@@ -96,17 +98,21 @@ getNetworkStatus
 # If the retval contains "No active", we consider that an alert state and set the text color to red. Otherwise, we set it to green.
 # The symbol is set based on the type of connection found (VPN, Ethernet, Wi-Fi, or no connection)
 if [[ "$retval" == "No active"* ]]; then
-    is_alert=true
-    nic_status="${red} ${retval}"
+    ShowAlert=true
+    nicStatu="${redCircle} ${retval}"
+elif [[ "$retval" == *"169.254"* ]]; then
+    # If the NIC shows a self assigned address, then show an alert and change the icon to yellow
+    ShowAlert=true
+    nicStatu="${yellowCircle} ${retval}"
 else
-    nic_status="${green} ${retval}"
+    nicStatu="${greenCircle} ${retval}"
 fi
 
 # Write output to Support App preference plist
-defaults write "$supportAppDir" "${extensionID}_alert" -bool "$is_alert"
+defaults write "$supportAppDir" "${extensionID}_alert" -bool "$ShowAlert"
 
 # Write the text output to Support App preference plist
-defaults write "$supportAppDir" "${extensionID}" -string "${nic_status}"
+defaults write "$supportAppDir" "${extensionID}" -string "${nicStatu}"
 # Show network icon based on connection type
 defaults write "$supportAppDir" "${extensionID}_symbol" -string "${symbol}"
 

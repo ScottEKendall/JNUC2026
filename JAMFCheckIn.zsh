@@ -26,13 +26,13 @@ twenty_four_hour_format="false"
 extension_id="last_check_in"
 color_indicators="true"  # Set to "true" to use the color circle emojis, "false" or anything else for no emojis
 if [[ "$color_indicators" == "true" ]]; then
-    green_circle="🟢 "
-    yellow_circle="🟡 "
-    red_circle="🔴 "
+    greenCircle="🟢 "
+    yellowCircle="🟡 "
+    redCircle="🔴 "
 else
-    green_circle=""
-    yellow_circle=""
-    red_circle=""
+    greenCircle=""
+    yellowCircle=""
+    redCircle=""
 fi
 
 # ---------------------    do not edit below this line    ----------------------
@@ -77,13 +77,13 @@ eight_hours=28800
 # Determine the status symbol based on age
 if [[ $diff_seconds -ge $eight_hours ]]; then
   # Red circle for over 8 hours
-  status_symbol=$red_circle
+  status_symbol=$redCircle
 elif [[ $diff_seconds -ge $four_hours ]]; then
   # Yellow circle for over 4 hours
-  status_symbol=$yellow_circle
+  status_symbol=$yellowCircle
 else
   # Green circle for recent check-in
-  status_symbol=$green_circle
+  status_symbol=$greenCircle
 fi
 
 # Update the human readable string to include the status symbol
