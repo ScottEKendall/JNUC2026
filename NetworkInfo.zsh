@@ -8,7 +8,6 @@
 # set -x
 
 # Location of the Support App preference plist where we will write the network status. Make sure this matches the path used by your Support App to read the extension data. 
-
 supportAppDir="/Library/Preferences/nl.root3.support.plist"
 
 # The extensionID variable will be used as a suffix for the keys we write to this plist, so they should be unique for each extension you create.
@@ -114,6 +113,7 @@ defaults write "$supportAppDir" "${extensionID}_alert" -bool "$ShowAlert"
 
 # Write the text output to Support App preference plist
 defaults write "$supportAppDir" "${extensionID}" -string "${nicStatu}"
+
 # Show network icon based on connection type
 defaults write "$supportAppDir" "${extensionID}_symbol" -string "${symbol}"
 
