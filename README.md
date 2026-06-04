@@ -1,3 +1,5 @@
+![](./JNUCAnnouncement.jpeg)
+
 # JNUC2026
 
 My presentation slides &amp; scripts I used at JNUC 2026 in Kansas City
@@ -37,6 +39,3 @@ Designed to show the age of your password and when it was last change.  The stat
 The script is designed to work in tandem with my inTune Password script so I can retrieve the password age from our server rather then rely on the local account password age (theoritcally, they should always be the same, but I want to use the server as my "source of truth").  
 
 The inTune password script can be found [here](https://github.com/ScottEKendall/JAMF-Pro-System-Scripts/blob/main/Maintenance%20-%20InTune%20-%20Passwords.sh)
-
-![](./JNUCAnnouncement.jpeg)
-
