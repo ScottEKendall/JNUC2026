@@ -34,7 +34,7 @@ This extension showcases what all you can do with extension notifications.  In t
 
 [ShowPasswordAge](https://github.com/ScottEKendall/JNUC2026/blob/main/ShowPasswordAge.zsh)
 
-Designed to show the age of your password and when it was last change.  The status icons will changed based on the age (currently Green for over 14 days left, Yellow less then 14 days left and red if less then 14 days left)
+Designed to show the age of your password and when it was last change.  The status icons will changed based on the age (currently Green for over 14 days left, Yellow less then 14 days left and red if less then 7 days left)
 
 The script is designed to work in tandem with my inTune Password script so I can retrieve the password age from our server rather then rely on the local account password age (theoritcally, they should always be the same, but I want to use the server as my "source of truth").  
 
