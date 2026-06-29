@@ -1,6 +1,11 @@
 #!/bin/zsh
-
+#
 # Support App Extension - Show Password Age
+#
+# by: Scott Kendall (@ScottKendall on Slack)
+#
+# Written: 05/15/26
+# Last updated: 06/29/26
 #
 # Support App Extension to show the age of the current user's password and how many days are left until it expires.
 # Tbis script works in tandem with my script that retrieves the password age and last changed date from our Entra Server and writes it to the local users com.GiantEagleEntra.plist.
@@ -28,6 +33,15 @@ passwordLimit=365
 # Notification Limit in days...this is the number of days before password expiration that you want to trigger a warning notification for the user
 notificationLimit=14
 
+# Set to true to enable color indicators (red/green circles) for password status
+colorIndicators="true"
+
+if [[ "$colorIndicators" == "true" ]]; then
+    green_circle="🟢 "  yellow_circle="🟡 "  red_circle="🔴 "
+else
+    green_circle="" yellow_circle="" red_circle=""
+fi
+
 # Set the loading key to true to trigger the loading animation in the Support App while we retrieve
 # the password age and calculate days left until expiration
 defaults write "$supportAppDir" "${extensionID}_loading" -bool true
@@ -46,17 +60,23 @@ else
     PasswordAge=0
     LastPasswordChange=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 fi
-dayleft=$((passwordLimit - PasswordAge))
+daysleft=$((passwordLimit - PasswordAge))
+
+case 1 in
+    $(( daysleft > 14 )) ) output=$green_circle ;;
+    $(( daysleft > 7 ))  ) output=$yellow_circle ;;
+    *                    ) output=$red_circle ;;
+esac
 
 # Reformat the last password change date to something more human readable
 LastPasswordChangeDate=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" $LastPasswordChange +"%x")
 
 # Write the text output to Support App preference plist
-defaults write "$supportAppDir" "${extensionID}" -string "Changed: ${LastPasswordChangeDate}\n${dayleft} Days Left"
+defaults write "$supportAppDir" "${extensionID}" -string "Changed: ${LastPasswordChangeDate}\n$output${daysleft} Days Left "
 
 # Trigger an orange warning notification for the user if their password is set to expire within the notification limit
 showAlert=false
-if [[ $dayleft -le $notificationLimit ]]; then
+if [[ $daysleft -le $notificationLimit ]]; then
     showAlert=true
 fi
 defaults write "$supportAppDir" "${extensionID}_alert" -bool $showAlert

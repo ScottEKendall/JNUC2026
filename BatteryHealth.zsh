@@ -1,6 +1,11 @@
 #!/bin/zsh
-
+#
 # Support App Extension - Show Battery Health & Charge-based Icon
+#
+# by: Scott Kendall (@ScottKendall on Slack)
+#
+# Written: 05/15/26
+# Last updated: 06/29/26
 
 # This Support App Extension retrieves the battery health and current charge percentage of a MacBook and displays it in the Support App. 
 # It also changes the icon based on the current charge percentage and will trigger an alert if the battery health is not normal or if the maximum capacity is below 80%.

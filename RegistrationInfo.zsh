@@ -1,4 +1,12 @@
 #!/bin/zsh
+#
+# Support App Extension - Registration Info
+#
+# by: Scott Kendall (@ScottKendall on Slack)
+#
+# Written: 05/15/26
+# Last updated: 06/29/26
+# Support App Extension to show the registration status (pSSO) of the current user
 
 # Extension ID added for Support app 3.0 config
 extension_id="registration"

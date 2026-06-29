@@ -1,6 +1,11 @@
 #!/bin/zsh
-
+#
 # Support App Extension - NetworkInfo
+#
+# by: Scott Kendall (@ScottKendall on Slack)
+#
+# Written: 05/15/26
+# Last updated: 06/29/26
 #
 # Support App Extension to show the current IP address of the active network adapter and change the icon based on whether the user is connected via Ethernet, Wi-Fi, or VPN.
 # The script checks for an active VPN connection first, then checks for Ethernet (prioritizing wired connections), and finally checks for Wi-Fi. If no active network adapter is found
