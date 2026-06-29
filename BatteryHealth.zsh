@@ -50,7 +50,7 @@ function getBatteryHealth() {
 
     # 4. Map charge to SF Symbols 
     symbol="battery.0"
-    if   (( currentCharge > 79 )); then symbol="battery.100"
+    if   (( currentCharge > 74 )); then symbol="battery.100"
     elif (( currentCharge > 49 )); then symbol="battery.75"
     elif (( currentCharge > 24 )); then symbol="battery.50"
     elif (( currentCharge >= 0 )); then symbol="battery.25"
@@ -90,7 +90,7 @@ function getBatteryHealth() {
 
 # Set the loading key to true to trigger the loading animation in the Support App while we retrieve the battery information
 defaults write "$supportAppDir" "${extensionID}_loading" -bool true
-sleep .5
+sleep .25
 
 getBatteryHealth
 
@@ -101,6 +101,9 @@ if [[ "$showAlert" == "true" ]]; then
         isAlert="true"
     fi
 fi
+
+# Write output to Support App preference plist
+defaults write "$supportAppDir" "${extensionID}_alert" -bool "$isAlert"
 
 # Write the text output to Support App preference plist
 defaults write "$supportAppDir" "${extensionID}" -string "${retval}"
