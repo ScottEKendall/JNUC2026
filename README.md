@@ -14,6 +14,7 @@ The initial setup of support.app takes some time to get it configured for your e
 
 This is designed to show the curent charge and maximum capacity of their laptop (running this on a desktop will show accordingly).  If the battery is "failing" (by Apple standards) it will reflect a red icon in the extension list as well as put an alert in the support app itself.
 
+![](./BatteryInfo.png)
 ## JAMFCheckIn ##
 
 [JAMFCheckin.zsh](https://github.com/ScottEKendall/JNUC2026/blob/main/JAMFCheckIn.zsh)
