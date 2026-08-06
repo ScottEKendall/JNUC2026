@@ -5,7 +5,7 @@
 # by: Scott Kendall (@ScottKendall on Slack)
 #
 # Written: 05/15/26
-# Last updated: 06/29/26
+# Last updated: 08/29/26
 
 # This Support App Extension retrieves the battery health and current charge percentage of a MacBook and displays it in the Support App. 
 # It also changes the icon based on the current charge percentage and will trigger an alert if the battery health is not normal or if the maximum capacity is below 80%.
@@ -36,24 +36,23 @@ declare -g maxCapacity=100
 local isAlert="false"
 
 function getBatteryHealth() {
-    # 1. Read the I/O Kit power registry once into memory (Instantaneous)
-    # Extracts MaxCapacity, DesignCapacity, and Condition efficiently
-    powerData=$(ioreg -n AppleSmartBattery -r 2>/dev/null)
 
-    # 2. Check if it's a laptop by checking if battery registry data exists
-    if [[ -z "$powerData" ]]; then
+    # 1. Check if it's a laptop by checking if battery registry data exists
+    modelName=$(system_profiler SPHardwareDataType 2>/dev/null | awk -F': ' '/Model Name/ {print $2}')
+    if [[ $modelName != MacBook* ]]; then
         retval="Not A Laptop"
         symbol="desktopcomputer"
         return
     fi
 
-    # 3. Fast extraction of current charge using pmset
+    # 2. Fast extraction of current charge using ioreg
+    powerData=$(ioreg -n AppleSmartBattery -r 2>/dev/null)
     local currentCharge=100
     if [[ "$powerData" =~ '"CurrentCapacity" = ([0-9]+)' ]]; then
         currentCharge=${match[1]}
     fi
 
-    # 4. Map charge to SF Symbols 
+    # 3. Map charge to SF Symbols 
     symbol="battery.0"
     if   (( currentCharge > 74 )); then symbol="battery.100"
     elif (( currentCharge > 49 )); then symbol="battery.75"
@@ -61,13 +60,13 @@ function getBatteryHealth() {
     elif (( currentCharge >= 0 )); then symbol="battery.25"
     fi
 
-    # 5. Extract Health Condition using Zsh native regex (No grep/awk/xargs needed)
+    # 4. Extract Health Condition using Zsh native regex (No grep/awk/xargs needed)
     HealthCondition="Normal"
     if [[ "$powerData" =~ '"PermanentFailureStatus" = ([0-9]+)' && "${match[1]}" != "0" ]]; then
         HealthCondition="Service Battery"
     fi
 
-    # 6. Check architecture natively using Zsh parameters
+    # 5. Check architecture natively using Zsh parameters
 
     if [[ "$(sysctl -n hw.optional.arm64 2>/dev/null)" == "1" ]]; then
         # Apple Silicon: Calculate Maximum Capacity (State of Health)
@@ -102,7 +101,9 @@ getBatteryHealth
 # Set the alert key to true if battery health is not normal or if maximum capacity is below 80%
 
 if [[ "$showAlert" == "true" ]]; then
-    if [[ "$retval" != *"Normal"* ]] || (( maxCapacity < 80 )); then
+    if [[ "$retval" == "Not A Laptop" ]]; then
+        isAlert="false"
+    elif [[ "$retval" != *"Normal"* ]] || (( maxCapacity < 80 )); then
         isAlert="true"
     fi
 fi

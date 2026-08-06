@@ -5,7 +5,7 @@
 # by: Scott Kendall (@ScottKendall on Slack)
 #
 # Written: 05/15/26
-# Last updated: 06/29/26
+# Last updated: 08/06/26
 #
 # Support App Extension to show the age of the current user's password and how many days are left until it expires.
 # Tbis script works in tandem with my script that retrieves the password age and last changed date from our Entra Server and writes it to the local users com.GiantEagleEntra.plist.
