@@ -6,7 +6,7 @@ My presentation slides &amp; scripts I used at JNUC 2026 in Kansas City
 
 I am using the excellent support.app utility [found here](https://github.com/root3nl/SupportApp) to help drive my users to a "common" point for utilities, notifications, shortcuts, etc.  
 
-Here is a link to my presentation PDF: [![Download PDF](pdf-icon.png)](./FINAL%20-%201083%20-%20Beyond%20Self%20Service.pdf)
+Here is a link to my presentation PDF: [Download PDF](./FINAL%20-%201083%20-%20Beyond%20Self%20Service.pdf)
 
 The initial setup of support.app takes some time to get it configured for your environment, but once it is setup it can become a very powerful tool.  Below are the extensions that I have developed for my users.
 
