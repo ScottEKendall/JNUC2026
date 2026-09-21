@@ -6,13 +6,15 @@ My presentation slides &amp; scripts I used at JNUC 2026 in Kansas City
 
 I am using the excellent support.app utility [found here](https://github.com/root3nl/SupportApp) to help drive my users to a "common" point for utilities, notifications, shortcuts, etc.  
 
+Here is a link to my presentation PDF: [![Download PDF](pdf-icon.png)](./FINAL%20-%201083%20-%20Beyond%20Self%20Service.pdf)
+
 The initial setup of support.app takes some time to get it configured for your environment, but once it is setup it can become a very powerful tool.  Below are the extensions that I have developed for my users.
 
 ## Battery Health ##
 
 [BatteryHealth.zsh](https://github.com/ScottEKendall/JNUC2026/blob/main/BatteryHealth.zsh)
 
-This is designed to show the curent charge and maximum capacity of their laptop (running this on a desktop will show accordingly).  If the battery is "failing" (by Apple standards) it will reflect a red icon in the extension list as well as put an alert in the support app itself.
+This is designed to show the current charge and maximum capacity of their laptop (running this on a desktop will show accordingly).  If the battery is "failing" (by Apple standards) it will reflect a red icon in the extension list as well as put an alert in the support app itself.
 
 ![](./BatteryInfo.png)
 ## JAMFCheckIn ##
@@ -29,7 +31,8 @@ This extensions will show your connection type and an icon to reflect the connec
 
 This extension showcases what all you can do with extension notifications.  In this example, the networks could have 1 of 5 possible configurations (with their respective icons) and will show an alert under specific conditions.
 
-![](NetworkInfo_icons.png)
+
+<img src="NetworkInfo_icons.png" alt="Alt Text" width="300">
 
 ## ShowPasswordAge ##
 
@@ -37,6 +40,12 @@ This extension showcases what all you can do with extension notifications.  In t
 
 Designed to show the age of your password and when it was last change.  The status icons will changed based on the age (currently Green for over 14 days left, Yellow less then 14 days left and red if less then 7 days left)
 
-The script is designed to work in tandem with my inTune Password script so I can retrieve the password age from our server rather then rely on the local account password age (theoritcally, they should always be the same, but I want to use the server as my "source of truth").  
+The script is designed to work in tandem with my inTune Password script so I can retrieve the password age from our server rather then rely on the local account password age (theoretically, they should always be the same, but I want to use the server as my "source of truth").  
 
 The inTune password script can be found [here](https://github.com/ScottEKendall/JAMF-Pro-System-Scripts/blob/main/Maintenance%20-%20InTune%20-%20Passwords.sh)
+
+## Jacob Edwards Repo ##
+
+This is a link to my co-Presenters GitHub repo in which he is showcasing his Platform SSO Registration extensions
+
+https://github.com/jaedwards24/JNUC2026
