@@ -10,20 +10,21 @@ Here is a link to my presentation PDF: [Download PDF](./FINAL%20-%201083%20-%20B
 
 The initial setup of support.app takes some time to get it configured for your environment, but once it is setup it can become a very powerful tool.  Below are the extensions that I have developed for my users.
 
-## Battery Health ##
+## Battery Health
 
 [BatteryHealth.zsh](https://github.com/ScottEKendall/JNUC2026/blob/main/BatteryHealth.zsh)
 
 This is designed to show the current charge and maximum capacity of their laptop (running this on a desktop will show accordingly).  If the battery is "failing" (by Apple standards) it will reflect a red icon in the extension list as well as put an alert in the support app itself.
 
 ![](./BatteryInfo.png)
-## JAMFCheckIn ##
+
+## JAMFCheckIn
 
 [JAMFCheckin.zsh](https://github.com/ScottEKendall/JNUC2026/blob/main/JAMFCheckIn.zsh)
 
 This is the same extension that the support.app website uses for their example, I just added some icons to show the status
 
-## NetworkInfo ##
+## NetworkInfo
 
 [NetworkInfo.zsh](https://github.com/ScottEKendall/JNUC2026/blob/main/NetworkInfo.zsh)
 
@@ -31,10 +32,9 @@ This extensions will show your connection type and an icon to reflect the connec
 
 This extension showcases what all you can do with extension notifications.  In this example, the networks could have 1 of 5 possible configurations (with their respective icons) and will show an alert under specific conditions.
 
-
 <img src="NetworkInfo_icons.png" alt="Alt Text" width="300">
 
-## ShowPasswordAge ##
+## ShowPasswordAge
 
 [ShowPasswordAge](https://github.com/ScottEKendall/JNUC2026/blob/main/ShowPasswordAge.zsh)
 
@@ -44,8 +44,8 @@ The script is designed to work in tandem with my inTune Password script so I can
 
 The inTune password script can be found [here](https://github.com/ScottEKendall/JAMF-Pro-System-Scripts/blob/main/Maintenance%20-%20InTune%20-%20Passwords.sh)
 
-## Jacob Edwards Repo ##
+## Jacob Edwards Repo
 
 This is a link to my co-Presenters GitHub repo in which he is showcasing his Platform SSO Registration extensions
 
-https://github.com/jaedwards24/JNUC2026
+<https://github.com/jaedwards24/JNUC2026>
