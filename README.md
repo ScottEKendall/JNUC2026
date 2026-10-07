@@ -49,3 +49,7 @@ The inTune password script can be found in the [JAMF-Pro system scripts reposito
 This is a link to my co-Presenters GitHub repo in which he is showcasing his Platform SSO Registration extensions
 
 <https://github.com/jaedwards24/JNUC2026>
+
+### Updateed 10/7/26 ###
+
+I used MS CoPilot to help optimize the code (ie, more efficient).  Those updated files can be found in the "Modified" folder...they are a drop-in replacmeent for the "orginals" script that during my presentation (and also linked to in this README).
