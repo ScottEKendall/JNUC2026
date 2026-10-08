@@ -12,7 +12,7 @@ The initial setup of support.app takes some time to get it configured for your e
 
 ## Battery Health
 
-[BatteryHealth.zsh](https://github.com/ScottEKendall/JNUC2026/blob/main/BatteryHealth.zsh)
+[BatteryHealth.zsh](./Originals/BatteryHealth-orig.zsh)
 
 This is designed to show the current charge and maximum capacity of their laptop (running this on a desktop will show accordingly).  If the battery is "failing" (by Apple standards) it will reflect a red icon in the extension list as well as put an alert in the support app itself.
 
@@ -20,13 +20,13 @@ This is designed to show the current charge and maximum capacity of their laptop
 
 ## JAMFCheckIn
 
-[JAMFCheckin.zsh](https://github.com/ScottEKendall/JNUC2026/blob/main/JAMFCheckIn.zsh)
+[JAMFCheckin.zsh](./Originals/JAMFCheckIn-orig.zsh)
 
 This is the same extension that the support.app website uses for their example, I just added some icons to show the status
 
 ## NetworkInfo
 
-[NetworkInfo.zsh](https://github.com/ScottEKendall/JNUC2026/blob/main/NetworkInfo.zsh)
+[NetworkInfo.zsh](./Originals/NetworkInfo-orig.zsh)
 
 This extensions will show your connection type and an icon to reflect the connection as well.  It uses the priority of (VPN > Ethernet > Wifi).  It will also show an alert if it cannot find any active connection on your system.
 
@@ -36,7 +36,7 @@ This extension showcases what all you can do with extension notifications.  In t
 
 ## ShowPasswordAge
 
-[ShowPasswordAge](https://github.com/ScottEKendall/JNUC2026/blob/main/ShowPasswordAge.zsh)
+[ShowPasswordAge](./Originals/PasswordAge-orig.zsh)
 
 Designed to show the age of your password and when it was last change.  The status icons will changed based on the age (currently Green for over 14 days left, Yellow less then 14 days left and red if less then 7 days left)
 
