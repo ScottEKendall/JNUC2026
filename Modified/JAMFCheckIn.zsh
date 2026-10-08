@@ -1,12 +1,13 @@
-#!/bin/zsh --no-rcs
+#!/bin/zsh
+#
+# Support App Extension - JAMF Checkin
+#
+# by: Scott Kendall (@ScottKendall on Slack)
+#
+# Written: 05/15/26
+# Last updated: 10/08/26
 
-##############################################################################
-#
-# Support App Extension - Jamf Pro Last Check-In Time
-#
-# Copyright 2025 Root3 B.V.
-#
-##############################################################################
+# This Support App Extension retrieves the last time the JAMF policy (checkin) was run.
 
 # ------------------ Edit Variables Below This Line ------------------ #
 
@@ -32,22 +33,16 @@ readonly FOUR_HOURS=$((4 * 3600))
 readonly EIGHT_HOURS=$((8 * 3600))
 
 # Status indicators
-if [[ "$colorIndicator" == "true" ]]; then
-    greenCircle="🟢 "
-    yellowCircle="🟡 "
-    redCircle="🔴 "
-else
-    greenCircle=""
-    yellowCircle=""
-    redCircle=""
-fi
+[[ "$colorIndicator" == "true" ]] && greenCircle="🟢 " || greenCircle=""
+[[ "$colorIndicator" == "true" ]] && yellowCircle="🟡 " || yellowCircle=""
+[[ "$colorIndicator" == "true" ]] && redCircle="🔴 " || redCircle=""
 
 # Start Loading Animation
 
 defaults write "${preference_file_location}" "${extension_id}_loading" -bool true
 
 # Small delay so spinner is visible
-sleep 0.3
+sleep 0.2
 
 # Get Last Check-In Time
 
@@ -57,13 +52,7 @@ if [[ ! -r "${jamf_log}" ]]; then
     exit 0
 fi
 
-last_check_in_time=$(awk '/Checking for policies triggered by "recurring check-in"/ {
-            timestamp = $2 " " $3 " " $4
-        }
-        END {
-            print timestamp
-        }' "${jamf_log}"
-)
+last_check_in_time=$(awk '/Checking for policies triggered by "recurring check-in"/ {timestamp = $2 " " $3 " " $4} END {print timestamp}' "${jamf_log}")
 
 if [[ -z "${last_check_in_time}" ]]; then
     defaults write "${preference_file_location}" "${extension_id}" -string "${redCircle}No Check-In Found"
@@ -94,9 +83,9 @@ fi
 now_epoch=$(date +%s)
 diff_seconds=$(( now_epoch - last_check_in_time_epoch ))
 
-if (( diff_seconds >= EIGHT_HOURS )); then  status_symbol="${redCircle}"
-elif (( diff_seconds >= FOUR_HOURS )); then status_symbol="${yellowCircle}"
-else                                        status_symbol="${greenCircle}"
+if   (( diff_seconds >= EIGHT_HOURS )); then status_symbol="${redCircle}"
+elif (( diff_seconds >= FOUR_HOURS ));  then status_symbol="${yellowCircle}"
+else                                         status_symbol="${greenCircle}"
 fi
 
 # Write the completed extension values.

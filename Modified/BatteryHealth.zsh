@@ -5,24 +5,28 @@
 # by: Scott Kendall (@ScottKendall on Slack)
 #
 # Written: 05/15/26
-# Last updated: 10/07/26
+# Last updated: 10/08/26
 #
 # Retrieves battery health and current charge percentage and displays
 # the results in Support App. The SF Symbol changes according to the
 # current charge percentage.
 #
 
-# Support App preference plist.
-typeset -r supportAppPlist="/Library/Preferences/nl.root3.support.plist"
+# ------------------ Edit Variables Below This Line ------------------ #
 
 # Must match the extension ID configured in Support App.
-typeset -r extensionID="BatteryHealth"
+readonly extensionID="BatteryHealth"
 
 # Alert when battery health is abnormal or maximum capacity is below 80%.
-typeset -r showAlert="true"
+readonly showAlert="true"
 
 # Display colored status indicators.
-typeset -r colorIndicator="true"
+readonly colorIndicator="true"
+
+# ------------------ Do Not Edit Below This Line ------------------ #
+
+# Support App preference plist.
+readonly supportAppPlist="/Library/Preferences/nl.root3.support.plist"
 
 # Extension output values.
 typeset retval=""
@@ -31,15 +35,9 @@ integer maxCapacity=100
 typeset healthCondition="Normal"
 typeset isAlert="false"
 
-if [[ "$colorIndicator" == "true" ]]; then
-    typeset -r greenCircle="🟢 "
-    typeset -r yellowCircle="🟡 "
-    typeset -r redCircle="🔴 "
-else
-    typeset -r greenCircle=""
-    typeset -r yellowCircle=""
-    typeset -r redCircle=""
-fi
+[[ "$colorIndicator" == "true" ]] && greenCircle="🟢 " || greenCircle=""
+[[ "$colorIndicator" == "true" ]] && yellowCircle="🟡 " || yellowCircle=""
+[[ "$colorIndicator" == "true" ]] && redCircle="🔴 " || redCircle=""
 
 getBatteryHealth() {
     local powerData=""
@@ -68,61 +66,46 @@ getBatteryHealth() {
     (( currentCharge > 100 )) && currentCharge=100
 
     # Select the charge-based SF Symbol.
-    if (( currentCharge >= 75 )); then
-        symbol="battery.100"
-    elif (( currentCharge >= 50 )); then
-        symbol="battery.75"
-    elif (( currentCharge >= 25 )); then
-        symbol="battery.50"
-    elif (( currentCharge > 5 )); then
-        symbol="battery.25"
-    else
-        symbol="battery.0"
+    if (( currentCharge >= 75 )); then      symbol="battery.100"
+    elif (( currentCharge >= 50 )); then    symbol="battery.75"
+    elif (( currentCharge >= 25 )); then    symbol="battery.50"
+    elif (( currentCharge > 5 )); then      symbol="battery.25"
+    else                                    symbol="battery.0"
     fi
 
     # Check the permanent battery failure status.
     if [[ "$powerData" =~ '"PermanentFailureStatus" = ([0-9]+)' ]]; then
         permanentFailureStatus=${match[1]}
-
-        if (( permanentFailureStatus != 0 )); then
-            healthCondition="Service Battery"
-        fi
+        (( permanentFailureStatus != 0 )) && healthCondition="Service Battery"
     fi
 
     # Calculate maximum capacity when both values are available.
-    if [[ "$powerData" =~ '"AppleRawMaxCapacity" = ([0-9]+)' ]]; then
-        rawMax=${match[1]}
-    fi
+    [[ "$powerData" =~ '"AppleRawMaxCapacity" = ([0-9]+)' ]] && rawMax=${match[1]}
 
-    if [[ "$powerData" =~ '"DesignCapacity" = ([0-9]+)' ]]; then
-        designCapacity=${match[1]}
-    fi
+    [[ "$powerData" =~ '"DesignCapacity" = ([0-9]+)' ]] && designCapacity=${match[1]}
 
-if (( rawMax > 0 && designCapacity > 0 )); then
-    maxCapacity=$(( rawMax * 100 / designCapacity ))
+    if (( rawMax > 0 && designCapacity > 0 )); then
+        maxCapacity=$(( rawMax * 100 / designCapacity ))
 
-    # Prevent unusual battery data from reporting more than 100%.
-    (( maxCapacity > 100 )) && maxCapacity=100
-    (( maxCapacity < 0 ))   && maxCapacity=0
+        # Prevent unusual battery data from reporting more than 100%.
+        (( maxCapacity > 100 )) && maxCapacity=100
+        (( maxCapacity < 0 ))   && maxCapacity=0
 
-    if (( maxCapacity >= 90 )); then
-        retval="${greenCircle}"
-    elif (( maxCapacity >= 80 )); then
-        retval="${yellowCircle}"
+        if (( maxCapacity >= 90 )); then    retval="${greenCircle}"
+        elif (( maxCapacity >= 80 )); then  retval="${yellowCircle}"
+        else                               retval="${redCircle}"
+        fi
+
+        retval+="${healthCondition}"
     else
-        retval="${redCircle}"
+        # Fallback when capacity data is unavailable.
+        if [[ "$healthCondition" == "Normal" ]]; then
+            retval="${greenCircle}${healthCondition}"
+        else
+            retval="${redCircle}${healthCondition}"
+        fi
     fi
-
-    retval+="${healthCondition}"
-else
-    # Fallback when capacity data is unavailable.
-    if [[ "$healthCondition" == "Normal" ]]; then
-        retval="${greenCircle}${healthCondition}"
-    else
-        retval="${redCircle}${healthCondition}"
-    fi
-fi
-retval+="\n(Capacity: ${maxCapacity}%)"
+    retval+="\n(Capacity: ${maxCapacity}%)"
 }
 
 # Enable the Support App loading indicator.
@@ -134,9 +117,7 @@ getBatteryHealth
 # Determine alert state from the underlying health values rather than
 # searching the formatted display string.
 if [[ "$showAlert" == "true" && "$retval" != "Not A Laptop" ]]; then
-    if [[ "$healthCondition" != "Normal" ]] || (( maxCapacity < 80 )); then
-        isAlert="true"
-    fi
+    [[ "$healthCondition" != "Normal" ]] || (( maxCapacity < 80 )) && isAlert="true"
 fi
 
 # Write the completed extension values.

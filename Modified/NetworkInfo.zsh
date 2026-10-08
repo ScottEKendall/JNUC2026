@@ -4,8 +4,13 @@
 #
 # by: Scott Kendall (@ScottKendall on Slack)
 #
-# Written:      05/15/26
-# Last Updated: 10/07/26
+# Written: 05/15/26
+# Last updated: 10/07/26
+#
+# Support App Extension to show the current IP address of the active network adapter and change the icon based on whether the user is connected via Ethernet, Wi-Fi, or VPN.
+# The script checks for an active VPN connection first, then checks for Ethernet (prioritizing wired connections), and finally checks for Wi-Fi. If no active network adapter is found
+# it will display a message indicating that and show a generic network icon. The script also supports optional color indicators (green for good, red for alert) based on whether an active adapter is found.
+# set -x
 #
 # Displays the current IPv4 address using this priority:
 #   1. Cisco VPN
@@ -13,40 +18,31 @@
 #   3. Active Wi‑Fi
 #   4. No active adapter found
 #
+# ------------------ Edit Variables Below This Line ------------------ #
 
-# ------------------------------------------------------------------------
-# Configuration
-# ------------------------------------------------------------------------
+# The extensionID variable will be used as a suffix for the keys we write to this plist, so they should be unique for each extension you create.
+extensionID="NetworkInfo"
 
-readonly supportAppPlist="/Library/Preferences/nl.root3.support.plist"
-readonly extensionID="NetworkInfo"
-readonly colorIndicator=true
+# Set to true to enable color indicators (red/green circles) for good/bad network status
+colorIndicator="true"
 
-# ------------------------------------------------------------------------
-# UI Indicators
-# ------------------------------------------------------------------------
+# ------------------ Do Not Edit Below This Line ------------------ #
 
-if [[ "$colorIndicator" == true ]]; then
-    readonly greenCircle="🟢"
-    readonly yellowCircle="🟡"
-    readonly redCircle="🔴"
-else
-    readonly greenCircle=""
-    readonly yellowCircle=""
-    readonly redCircle=""
-fi
+# Location of the Support App preference plist where we will write the network status. Make sure this matches the path used by your Support App to read the extension data. 
+readonly supportAppDir="/Library/Preferences/nl.root3.support.plist"
 
-# ------------------------------------------------------------------------
+# Status indicators
+[[ "$colorIndicator" == "true" ]] && greenCircle="🟢 " || greenCircle=""
+[[ "$colorIndicator" == "true" ]] && yellowCircle="🟡 " || yellowCircle=""
+[[ "$colorIndicator" == "true" ]] && redCircle="🔴 " || redCircle=""
+
 # Defaults
-# ------------------------------------------------------------------------
 
 typeset networkStatus="No active adapter found"
 typeset networkSymbol="network.slash"
 typeset showAlert=false
 
-# ------------------------------------------------------------------------
 # Functions
-# ------------------------------------------------------------------------
 
 function getCiscoVPNAddress() {
     local vpnBinary
@@ -56,11 +52,7 @@ function getCiscoVPNAddress() {
     do
         [[ -x "$vpnBinary" ]] || continue
 
-        vpnAddress=$("$vpnBinary" stats 2>/dev/null | /usr/bin/awk -F': ' '/Client Address \(IPv4\)/ {
-                    gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2)
-                    print $2
-                    exit}'
-)
+        vpnAddress=$("$vpnBinary" stats 2>/dev/null | /usr/bin/awk -F': ' '/Client Address \(IPv4\)/ {gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2; exit}')
 
         if [[ -n "$vpnAddress" && "$vpnAddress" != "Not Available" ]]; then
             print -r -- "$vpnAddress"
@@ -77,26 +69,12 @@ function getHardwarePortInformation() {
 
 function getWiFiInterface() {
     local hardwarePortInformation="$1"
-
-    print -r -- "$hardwarePortInformation" |/usr/bin/awk '/^Hardware Port: (Wi-Fi|AirPort)$/ {
-            getline
-            if ($1 == "Device:")
-                print $2}'
+    print -r -- "$hardwarePortInformation" |/usr/bin/awk '/^Hardware Port: (Wi-Fi|AirPort)$/ {getline; if ($1 == "Device:");print $2}'
 }
 
 function getEthernetInterfaces() {
     local hardwarePortInformation="$1"
-
-    print -r -- "$hardwarePortInformation" | /usr/bin/awk '/^Hardware Port:/ {
-            hardwarePort = substr($0, index($0, ":") + 2)
-
-            if (hardwarePort ~ /(Ethernet|LAN)/) {
-                getline
-
-                if ($1 == "Device:")
-                    print $2
-            }
-        }'
+    print -r -- "$hardwarePortInformation" | /usr/bin/awk '/^Hardware Port:/ {hardwarePort = substr($0, index($0, ":") + 2); if (hardwarePort ~ /(Ethernet|LAN)/) {getline;if ($1 == "Device:");print $2}}'
 }
 
 function interfaceIsActive() {
@@ -183,21 +161,15 @@ function getNetworkStatus() {
     fi
 }
 
-# ------------------------------------------------------------------------
 # Start Loading Indicator
-# ------------------------------------------------------------------------
 
 /usr/bin/defaults write "$supportAppPlist" "${extensionID}_loading" -bool true
 
-# ------------------------------------------------------------------------
 # Get Network Status
-# ------------------------------------------------------------------------
 
 getNetworkStatus
 
-# ------------------------------------------------------------------------
 # Status Formatting
-# ------------------------------------------------------------------------
 
 displayStatus="${greenCircle:+${greenCircle} }${networkStatus}"
 
@@ -213,9 +185,7 @@ elif [[ "${networkStatus%%\\n*}" == 169.254.* ]]; then
 
 fi
 
-# ------------------------------------------------------------------------
 # Write Support App Values
-# ------------------------------------------------------------------------
 
 /usr/bin/defaults write "$supportAppPlist" "${extensionID}_alert" -bool "$showAlert"
 

@@ -4,29 +4,46 @@
 
 My presentation slides &amp; scripts I used at JNUC 2026 in Kansas City
 
-I am using the excellent support.app utility [found here](https://github.com/root3nl/SupportApp) to help drive my users to a "common" point for utilities, notifications, shortcuts, etc.  
+I am using the excellent SupportApp utility found [here](https://github.com/root3nl/SupportApp) to help drive my users to a "common" point for utilities, notifications, shortcuts, etc.  
 
-Here is a link to my presentation PDF: [Download PDF](./FINAL%20-%201083%20-%20Beyond%20Self%20Service.pdf)
+Here is a link to our presentation PDF: [Download PDF](./FINAL%20-%201083%20-%20Beyond%20Self%20Service.pdf)
 
-The initial setup of support.app takes some time to get it configured for your environment, but once it is setup it can become a very powerful tool.  Below are the extensions that I have developed for my users.
 
-## Battery Health
+## SupportApp Setup ##
+The initial setup of SupportApp takes some time to get it configured for your environment, but once it is setup it can become a very powerful tool.  
+
+**IMPORTANT!** There are a few items to take note:
+* The copied files must have root:wheel ownership ```chmod root:wheel *```
+* The copied files must have execute permissions ```chmod +x *```
+
+
+## Extension Showcase ##
+
+>Listed below are the extensions that I use in my environment.  Each extension will have the original script (that I used to presented @ JNUC) as well as the "optimized" scripts (these scripts offer significant performance gains, but are less readable...I used MS CoPilot to help optimize the code)
+
+### Battery Health
 
 [BatteryHealth.zsh](./Originals/BatteryHealth-orig.zsh)
+
+[Optimized](./Modified/BatteryHealth.zsh)
 
 This is designed to show the current charge and maximum capacity of their laptop (running this on a desktop will show accordingly).  If the battery is "failing" (by Apple standards) it will reflect a red icon in the extension list as well as put an alert in the support app itself.
 
 ![Battery health information](./BatteryInfo.png)
 
-## JAMFCheckIn
+### JAMFCheckIn
 
 [JAMFCheckin.zsh](./Originals/JAMFCheckIn-orig.zsh)
 
+[Optimized](./Modified/JAMFCheckIn.zsh)
+
 This is the same extension that the support.app website uses for their example, I just added some icons to show the status
 
-## NetworkInfo
+### NetworkInfo
 
 [NetworkInfo.zsh](./Originals/NetworkInfo-orig.zsh)
+
+[Optimized](./Modified/NetworkInfo.zsh)
 
 This extensions will show your connection type and an icon to reflect the connection as well.  It uses the priority of (VPN > Ethernet > Wifi).  It will also show an alert if it cannot find any active connection on your system.
 
@@ -34,9 +51,11 @@ This extension showcases what all you can do with extension notifications.  In t
 
 <img src="NetworkInfo_icons.png" alt="Alt Text" width="300">
 
-## ShowPasswordAge
+### ShowPasswordAge
 
 [ShowPasswordAge](./Originals/PasswordAge-orig.zsh)
+
+[Optimized](./Modified/PasswordAge.zsh)
 
 Designed to show the age of your password and when it was last change.  The status icons will changed based on the age (currently Green for over 14 days left, Yellow less then 14 days left and red if less then 7 days left)
 
@@ -44,12 +63,15 @@ The script is designed to work in tandem with my inTune Password script so I can
 
 The inTune password script can be found in the [JAMF-Pro system scripts repository](https://github.com/ScottEKendall/JAMF-Pro-System-Scripts/blob/main/Maintenance%20-%20InTune%20-%20Passwords.sh).
 
+## Dashboard Display ##
+
+This is what a fully configured dashboard would look like after all of the scripts are in place.
+
+<img src="Dashboard.png" alt="Alt Text" width="500">
+
 ## Jacob Edwards Repo
 
 This is a link to my co-Presenters GitHub repo in which he is showcasing his Platform SSO Registration extensions
 
 <https://github.com/jaedwards24/JNUC2026>
 
-### Updateed 10/7/26 ###
-
-I used MS CoPilot to help optimize the code (ie, more efficient).  Those updated files can be found in the "Modified" folder...they are a drop-in replacmeent for the "orginals" script that during my presentation (and also linked to in this README).

@@ -12,12 +12,23 @@
 # Compatible with macOS BSD utilities
 #
 
-readonly supportAppPlist="/Library/Preferences/nl.root3.support.plist"
+# ------------------ Edit Variables Below This Line ------------------ #
+
 readonly extensionID="GetPasswordAge"
 
+# Set the password age limit in days...this should match the password expiration policy you have set in your Entra Server
 readonly passwordLimit=365
+
+# Notification Limit in days...this is the number of days before password expiration that you want to trigger a warning notification for the user
 readonly notificationLimit=14
-readonly colorIndicators=true
+
+# Set to true to enable color indicators (red/green circles) for password status
+readonly colorIndicator=true
+
+# ------------------ Do Not Edit Below This Line ------------------ #
+
+# Location of the Support App preference plist
+readonly supportAppPlist="/Library/Preferences/nl.root3.support.plist"
 
 # Get Logged In User
 
@@ -25,17 +36,10 @@ loggedInUser=$(/usr/sbin/scutil <<< "show State:/Users/ConsoleUser" | /usr/bin/a
 userHome=$(/usr/bin/dscl . -read "/Users/$loggedInUser" NFSHomeDirectory 2>/dev/null | /usr/bin/awk '{print $2}')
 localPlist="$userHome/Library/Application Support/com.GiantEagleEntra.plist"
 
-# UI Indicators
-
-if [[ "$colorIndicators" == true ]]; then
-    readonly greenCircle="🟢 "
-    readonly yellowCircle="🟡 "
-    readonly redCircle="🔴 "
-else
-    readonly greenCircle=""
-    readonly yellowCircle=""
-    readonly redCircle=""
-fi
+# Status indicators
+[[ "$colorIndicator" == "true" ]] && greenCircle="🟢 " || greenCircle=""
+[[ "$colorIndicator" == "true" ]] && yellowCircle="🟡 " || yellowCircle=""
+[[ "$colorIndicator" == "true" ]] && redCircle="🔴 " || redCircle=""
 
 # Enable Loading Indicator
 /usr/bin/defaults write "$supportAppPlist" "${extensionID}_loading" -bool true
@@ -48,11 +52,9 @@ LastPasswordChange=$(/bin/date -u +"%Y-%m-%dT%H:%M:%SZ")
 if [[ -r "$localPlist" ]]; then
 
     tmpPasswordAge=$(/usr/bin/defaults read "$localPlist" PasswordAge 2>/dev/null)
-
     tmpLastPasswordChange=$(/usr/bin/defaults read "$localPlist" PasswordLastChanged 2>/dev/null)
 
     [[ "$tmpPasswordAge" =~ ^[0-9]+$ ]] && PasswordAge="$tmpPasswordAge"
-
     [[ -n "$tmpLastPasswordChange" ]] && LastPasswordChange="$tmpLastPasswordChange"
 fi
 
