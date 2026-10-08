@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>DisableConfiguratorMode</key>
+	<false/>
+	<key>DisablePrivilegedHelperTool</key>
+	<false/>
+	<key>ErrorMessage</key>
+	<string>Please contact IT support</string>
+	<key>FooterText</key>
+	<string>Product of IT Client Services for macOS</string>
+	<key>Logo</key>
+	<string>/Library/Application Support/GiantEagle/SupportFiles/GE_Icon_rounded.png</string>
+	<key>LogoDarkMode</key>
+	<string>/Library/Application Support/GiantEagle/SupportFiles/GE_Icon_Dark_rounded.png</string>
+	<key>NotificationIcon</key>
+	<string>/Library/Application Support/GiantEagle/SupportFiles/GE_Icon.png</string>
+	<key>OnAppearAction</key>
+	<string>/Library/Application Support/GiantEagle/nl.root3.support/MeuOpen.zsh</string>
+	<key>OpenAtLogin</key>
+	<true/>
+	<key>PasswordExpiryLimit</key>
+	<integer>365</integer>
+	<key>PasswordLabel</key>
+	<string>Password Age:</string>
+	<key>PasswordType</key>
+	<string>JamfConnect</string>
+	<key>Rows</key>
+	<array>
+		<dict>
+			<key>Items</key>
+			<array>
+				<dict>
+					<key>Type</key>
+					<string>ComputerName</string>
+				</dict>
+				<dict>
+					<key>Type</key>
+					<string>MacOSVersion</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Items</key>
+			<array>
+				<dict>
+					<key>Type</key>
+					<string>Uptime</string>
+				</dict>
+				<dict>
+					<key>Type</key>
+					<string>Storage</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Items</key>
+			<array>
+				<dict>
+					<key>Action</key>
+					<string>https://mysignins.microsoft.com/security-info/password/change</string>
+					<key>ActionType</key>
+					<string>URL</string>
+					<key>ExtensionID</key>
+					<string>GetPasswordAge</string>
+					<key>OnAppearAction</key>
+					<string>/Library/Application Support/GiantEagle/nl.root3.support/PasswordAge.zsh</string>
+					<key>Symbol</key>
+					<string>person.badge.key.fill</string>
+					<key>Title</key>
+					<string>Password Info</string>
+					<key>Type</key>
+					<string>Extension</string>
+				</dict>
+				<dict>
+					<key>Action</key>
+					<string>/Library/Application Support/GiantEagle/nl.root3.support/JAMFCheckIn-OnClick.zsh</string>
+					<key>ActionType</key>
+					<string>PrivilegedScript</string>
+					<key>ExtensionID</key>
+					<string>last_check_in</string>
+					<key>OnAppearAction</key>
+					<string>/Library/Application Support/GiantEagle/nl.root3.support/JAMFCheckIn-OnAppeear.zsh</string>
+					<key>Symbol</key>
+					<string>waveform.path.ecg</string>
+					<key>Title</key>
+					<string>Last Check-in</string>
+					<key>Type</key>
+					<string>Extension</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Items</key>
+			<array>
+				<dict>
+					<key>Action</key>
+					<string>jamfselfservice://content?entity=policy&amp;id=318&amp;action=execute</string>
+					<key>ActionType</key>
+					<string>URL</string>
+					<key>ExtensionID</key>
+					<string>NetworkInfo</string>
+					<key>OnAppearAction</key>
+					<string>/Library/Application Support/GiantEagle/nl.root3.support/NetworkInfo.zsh</string>
+					<key>Symbol</key>
+					<string>network</string>
+					<key>Title</key>
+					<string>IP Address</string>
+					<key>Type</key>
+					<string>Extension</string>
+				</dict>
+				<dict>
+					<key>Action</key>
+					<string>jamfselfservice://content?entity=policy&amp;id=292&amp;action=execute</string>
+					<key>ActionType</key>
+					<string>URL</string>
+					<key>ExtensionID</key>
+					<string>BatteryHealth</string>
+					<key>OnAppearAction</key>
+					<string>/Library/Application Support/GiantEagle/nl.root3.support/BatteryHealth.zsh</string>
+					<key>Symbol</key>
+					<string>battery.75percent</string>
+					<key>Title</key>
+					<string>Battery</string>
+					<key>Type</key>
+					<string>Extension</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Items</key>
+			<array>
+				<dict>
+					<key>Action</key>
+					<string>/Library/Application Support/GiantEagle/nl.root3.support/Compliance-OnClick.zsh</string>
+					<key>ActionType</key>
+					<string>PrivilegedScript</string>
+					<key>ExtensionID</key>
+					<string>compliance</string>
+					<key>OnAppearAction</key>
+					<string>/Library/Application Support/GiantEagle/nl.root3.support/Compliance-OnAppear.zsh</string>
+					<key>Symbol</key>
+					<string>checkmark.seal.text.page</string>
+					<key>Title</key>
+					<string>Compliance</string>
+					<key>Type</key>
+					<string>Extension</string>
+				</dict>
+				<dict>
+					<key>Action</key>
+					<string>/Library/Application Support/GiantEagle/nl.root3.support/Registration-OnClick.zsh</string>
+					<key>ActionType</key>
+					<string>PrivilegedScript</string>
+					<key>ExtensionID</key>
+					<string>registration</string>
+					<key>OnAppearAction</key>
+					<string>/Library/Application Support/GiantEagle/nl.root3.support/Registration-OnAppear.zsh</string>
+					<key>Symbol</key>
+					<string>person.text.rectangle</string>
+					<key>Title</key>
+					<string>Registration</string>
+					<key>Type</key>
+					<string>Extension</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Items</key>
+			<array>
+				<dict>
+					<key>Action</key>
+					<string>com.jamf.selfserviceplus</string>
+					<key>ActionType</key>
+					<string>App</string>
+					<key>Subtitle</key>
+					<string></string>
+					<key>Symbol</key>
+					<string>cart.fill.badge.plus</string>
+					<key>Title</key>
+					<string>Self Service+</string>
+					<key>Type</key>
+					<string>Button</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Items</key>
+			<array>
+				<dict>
+					<key>Action</key>
+					<string>https://gianteagle.service-now.com/ge?id=sc_cat_item&amp;sys_id=227586311b9790503b637518dc4bcb3d</string>
+					<key>ActionType</key>
+					<string>URL</string>
+					<key>Subtitle</key>
+					<string>Create TSD Ticket</string>
+					<key>Symbol</key>
+					<string>ticket</string>
+					<key>Title</key>
+					<string>Get Help</string>
+					<key>Type</key>
+					<string>ButtonMedium</string>
+				</dict>
+				<dict>
+					<key>Action</key>
+					<string>https://gianteagle.service-now.com/ge?id=search&amp;spa=1&amp;q=macos</string>
+					<key>ActionType</key>
+					<string>URL</string>
+					<key>Subtitle</key>
+					<string>Online Help</string>
+					<key>Symbol</key>
+					<string>book.fill</string>
+					<key>Title</key>
+					<string>KB Articles</string>
+					<key>Type</key>
+					<string>ButtonMedium</string>
+				</dict>
+				<dict>
+					<key>Action</key>
+					<string>https://gianteagle.service-now.com/ge?id=ge_catalog</string>
+					<key>ActionType</key>
+					<string>URL</string>
+					<key>Subtitle</key>
+					<string></string>
+					<key>Symbol</key>
+					<string>person.crop.rectangle.badge.plus</string>
+					<key>Title</key>
+					<string>Service Catalog</string>
+					<key>Type</key>
+					<string>ButtonMedium</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Items</key>
+			<array>
+				<dict>
+					<key>Action</key>
+					<string>https://gianteagle.axonify.com/training/index.html#hub</string>
+					<key>ActionType</key>
+					<string>URL</string>
+					<key>Subtitle</key>
+					<string></string>
+					<key>Symbol</key>
+					<string>book.fill</string>
+					<key>Title</key>
+					<string>Thrive</string>
+					<key>Type</key>
+					<string>ButtonMedium</string>
+				</dict>
+				<dict>
+					<key>Action</key>
+					<string>https://expenses.gianteagle.com</string>
+					<key>ActionType</key>
+					<string>URL</string>
+					<key>Subtitle</key>
+					<string></string>
+					<key>Symbol</key>
+					<string>dollarsign.arrow.trianglehead.counterclockwise.rotate.90</string>
+					<key>Title</key>
+					<string>Expense Box</string>
+					<key>Type</key>
+					<string>ButtonMedium</string>
+				</dict>
+				<dict>
+					<key>Action</key>
+					<string>https://wd503.myworkday.com/gianteagle/d/home.htmld</string>
+					<key>ActionType</key>
+					<string>URL</string>
+					<key>Subtitle</key>
+					<string></string>
+					<key>Symbol</key>
+					<string>person.text.rectangle</string>
+					<key>Title</key>
+					<string>MyWorkDay</string>
+					<key>Type</key>
+					<string>ButtonMedium</string>
+				</dict>
+			</array>
+		</dict>
+	</array>
+	<key>ShowWelcomeScreen</key>
+	<true/>
+	<key>StatusBarIconAllowsColor</key>
+	<true/>
+	<key>StatusBarIconNotifierEnabled</key>
+	<true/>
+	<key>StorageLimit</key>
+	<integer>80</integer>
+	<key>Title</key>
+	<string>Hi $LocalFullName</string>
+	<key>UpdateText</key>
+	<string>Your $LocalModelShortName has **$LocalUpdatesAvailable update(s)** available. Please update as soon as possible.\n[More Info](jamfselfservice://content?entity=policy&amp;id=245&amp;action=view)</string>
+	<key>UptimeDaysLimit</key>
+	<integer>30</integer>
+</dict>
+</plist>
