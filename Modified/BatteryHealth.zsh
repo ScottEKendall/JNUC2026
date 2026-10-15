@@ -77,6 +77,14 @@ getBatteryHealth() {
     if [[ "$powerData" =~ '"PermanentFailureStatus" ?= ?([0-9]+)' ]]; then
         permanentFailureStatus=${match[1]}
         (( permanentFailureStatus != 0 )) && healthCondition="Service Battery"
+    else
+        # macOS 27+ no longer publishes PermanentFailureStatus in ioreg, so
+        # fall back to the condition reported by System Information
+        # (e.g. "Normal", "Service Recommended").
+        local spCondition=""
+        spCondition=$(/usr/sbin/system_profiler SPPowerDataType 2>/dev/null \
+            | /usr/bin/awk -F': ' '/^ +Condition:/ { print $2; exit }')
+        [[ -n "$spCondition" && "$spCondition" != "Normal" ]] && healthCondition="$spCondition"
     fi
 
     # Calculate maximum capacity when both values are available.
@@ -91,7 +99,8 @@ getBatteryHealth() {
         (( maxCapacity > 100 )) && maxCapacity=100
         (( maxCapacity < 0 ))   && maxCapacity=0
 
-        if (( maxCapacity >= 90 )); then    retval="${greenCircle}"
+        if [[ "$healthCondition" != "Normal" ]]; then retval="${redCircle}"
+        elif (( maxCapacity >= 90 )); then  retval="${greenCircle}"
         elif (( maxCapacity >= 80 )); then  retval="${yellowCircle}"
         else                               retval="${redCircle}"
         fi
