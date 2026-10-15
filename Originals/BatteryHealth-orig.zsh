@@ -5,7 +5,7 @@
 # by: Scott Kendall (@ScottKendall on Slack)
 #
 # Written: 05/15/26
-# Last updated: 10/15/26 (compatibility for macOS 27)
+# Last updated: 10/15/26 (macOS 27 compatibility)
 
 # This Support App Extension retrieves the battery health and current charge percentage of a MacBook and displays it in the Support App. 
 # It also changes the icon based on the current charge percentage and will trigger an alert if the battery health is not normal or if the maximum capacity is below 80%.
@@ -68,8 +68,13 @@ function getBatteryHealth() {
 
     # 4. Extract Health Condition using Zsh native regex (No grep/awk/xargs needed)
     HealthCondition="Normal"
-    if [[ "$powerData" =~ '"PermanentFailureStatus" ?= ?([0-9]+)' && "${match[1]}" != "0" ]]; then
-        HealthCondition="Service Battery"
+    if [[ "$powerData" =~ '"PermanentFailureStatus" ?= ?([0-9]+)' ]]; then
+        [[ "${match[1]}" != "0" ]] && HealthCondition="Service Battery"
+    else
+        # macOS 27+ no longer reports PermanentFailureStatus in ioreg, so use the
+        # battery condition from System Information instead (e.g. "Service Recommended")
+        spCondition=$(system_profiler SPPowerDataType 2>/dev/null | awk -F': ' '/^ +Condition:/ {print $2; exit}')
+        [[ -n "$spCondition" && "$spCondition" != "Normal" ]] && HealthCondition="$spCondition"
     fi
 
     # 5. Check architecture natively using Zsh parameters
@@ -85,15 +90,20 @@ function getBatteryHealth() {
             (( maxCapacity = (rawMax * 100) / designCap ))
         fi
 
-        # Determine color circle based on maximum capacity calculations
-        if   (( maxCapacity > 89 )); then retval=$greenCircle
+        # Determine color circle based on health condition and maximum capacity calculations
+        if   [[ "$HealthCondition" != "Normal" ]]; then retval=$redCircle
+        elif (( maxCapacity > 89 )); then retval=$greenCircle
         elif (( maxCapacity > 79 )); then retval=$yellowCircle
         else                              retval=$redCircle
         fi
         retval+="${HealthCondition}\n(Capacity: ${maxCapacity}%)"
     else
         # Intel Mac default fallback
-        retval="${greenCircle}${HealthCondition}\n"
+        if [[ "$HealthCondition" == "Normal" ]]; then
+            retval="${greenCircle}${HealthCondition}\n"
+        else
+            retval="${redCircle}${HealthCondition}\n"
+        fi
     fi
 }
 
