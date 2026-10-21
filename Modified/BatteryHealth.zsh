@@ -5,7 +5,7 @@
 # by: Scott Kendall (@ScottKendall on Slack)
 #
 # Written: 05/15/26
-# Last updated: 10/08/26
+# Last updated: 10/15/26 (compatibility for macOS 27)
 #
 # Retrieves battery health and current charge percentage and displays
 # the results in Support App. The SF Symbol changes according to the
@@ -57,7 +57,7 @@ getBatteryHealth() {
     fi
 
     # Current charge percentage.
-    if [[ "$powerData" =~ '"CurrentCapacity" = ([0-9]+)' ]]; then
+    if [[ "$powerData" =~ '"CurrentCapacity" ?= ?([0-9]+)' ]]; then
         currentCharge=${match[1]}
     fi
 
@@ -74,15 +74,23 @@ getBatteryHealth() {
     fi
 
     # Check the permanent battery failure status.
-    if [[ "$powerData" =~ '"PermanentFailureStatus" = ([0-9]+)' ]]; then
+    if [[ "$powerData" =~ '"PermanentFailureStatus" ?= ?([0-9]+)' ]]; then
         permanentFailureStatus=${match[1]}
         (( permanentFailureStatus != 0 )) && healthCondition="Service Battery"
+    else
+        # macOS 27+ no longer publishes PermanentFailureStatus in ioreg, so
+        # fall back to the condition reported by System Information
+        # (e.g. "Normal", "Service Recommended").
+        local spCondition=""
+        spCondition=$(/usr/sbin/system_profiler SPPowerDataType 2>/dev/null \
+            | /usr/bin/awk -F': ' '/^ +Condition:/ { print $2; exit }')
+        [[ -n "$spCondition" && "$spCondition" != "Normal" ]] && healthCondition="$spCondition"
     fi
 
     # Calculate maximum capacity when both values are available.
-    [[ "$powerData" =~ '"AppleRawMaxCapacity" = ([0-9]+)' ]] && rawMax=${match[1]}
+    [[ "$powerData" =~ '"AppleRawMaxCapacity" ?= ?([0-9]+)' ]] && rawMax=${match[1]}
 
-    [[ "$powerData" =~ '"DesignCapacity" = ([0-9]+)' ]] && designCapacity=${match[1]}
+    [[ "$powerData" =~ '"DesignCapacity" ?= ?([0-9]+)' ]] && designCapacity=${match[1]}
 
     if (( rawMax > 0 && designCapacity > 0 )); then
         maxCapacity=$(( rawMax * 100 / designCapacity ))
@@ -91,7 +99,8 @@ getBatteryHealth() {
         (( maxCapacity > 100 )) && maxCapacity=100
         (( maxCapacity < 0 ))   && maxCapacity=0
 
-        if (( maxCapacity >= 90 )); then    retval="${greenCircle}"
+        if [[ "$healthCondition" != "Normal" ]]; then retval="${redCircle}"
+        elif (( maxCapacity >= 90 )); then  retval="${greenCircle}"
         elif (( maxCapacity >= 80 )); then  retval="${yellowCircle}"
         else                               retval="${redCircle}"
         fi
