@@ -8,6 +8,8 @@ I am using the excellent SupportApp utility found [here](https://github.com/root
 
 Here is a link to our presentation PDF: [Download PDF](./FINAL%20-%201083%20-%20Beyond%20Self%20Service.pdf)
 
+There is a support channel in the Mac Admins Slack channel for support App: https://app.slack.com/huddle/T04QVKUQG/C02JD4WCXLH
+
 
 ## SupportApp Setup ##
 The initial setup of SupportApp takes some time to get it configured for your environment, but once it is setup it can become a very powerful tool.  
